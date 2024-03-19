@@ -1,14 +1,5 @@
 import React, { createContext, useContext, useState, ReactElement } from "react";
-
-interface ITokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-interface IAuthContext {
-  tokens: ITokens;
-  setTokens: (tokens: ITokens) => void;
-}
+import { IAuthContext, ITokens } from "./IAuthContext";
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
