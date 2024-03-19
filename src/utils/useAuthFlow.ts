@@ -10,29 +10,31 @@ const useAuthFlow = (authContext: IAuthContext) => {
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
-    if (!params.code && !authContext.tokens.accessToken)
-      window.location.href = SSO_ENDPOINT;
-    if (params.code && !authContext.tokens.accessToken) {
-      console.log("Fetching Token...");
-      axios
-        .post(TOKEN_EXCHANGE, {
-          code: params.code,
-        })
-        .then((response) => {
-          authContext.setTokens({
-            accessToken: response.headers["authorization"],
-            refreshToken: response.headers["refresh-token"],
-          });
-          console.log("Fetched Token.");
-        })
-        .catch((error) => console.log(error));
-    } else {
-      console.log("Set Token.");
-      axios.defaults.headers.common["Authorization"] =
-        authContext.tokens.accessToken;
-      axios.defaults.headers.common["Refresh-Token"] =
-        authContext.tokens.refreshToken;
-    }
+    const URL = window.location.href;
+    if (!URL.includes("logout"))
+      if (!params.code && !authContext.tokens.accessToken)
+        window.location.href = SSO_ENDPOINT;
+      else if (params.code && !authContext.tokens.accessToken) {
+        console.log("Fetching Token...");
+        axios
+          .post(TOKEN_EXCHANGE, {
+            code: params.code,
+          })
+          .then((response) => {
+            authContext.setTokens({
+              accessToken: response.headers["authorization"],
+              refreshToken: response.headers["refresh-token"],
+            });
+            console.log("Fetched Token.");
+          })
+          .catch((error) => console.log(error));
+      } else {
+        console.log("Set Token.");
+        axios.defaults.headers.common["Authorization"] =
+          authContext.tokens.accessToken;
+        axios.defaults.headers.common["Refresh-Token"] =
+          authContext.tokens.refreshToken;
+      }
   }, [authContext]);
 };
 

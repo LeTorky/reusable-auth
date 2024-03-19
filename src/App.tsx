@@ -6,6 +6,9 @@ function App() {
     const authContext = useAuthContext();
     useAuthFlow(authContext)
     return <div>
+      <button onClick={()=>{
+        authContext.logOut()
+      }}>Log out</button>
       {authContext.tokens.accessToken}
       {authContext.tokens.refreshToken}
     </div>

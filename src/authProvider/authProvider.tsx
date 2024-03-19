@@ -1,5 +1,8 @@
-import React, { createContext, useContext, useState, ReactElement } from "react";
+import React, { createContext, useContext, useState, ReactElement, useCallback } from "react";
 import { IAuthContext, ITokens } from "./IAuthContext";
+import axios from "axios";
+
+const TOKEN_LOGOUT = "https://margy-auth.onrender.com/token/logout";
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
@@ -19,9 +22,16 @@ export const AuthContextProvider: React.FC<{children?: ReactElement}> = ({ child
     refreshToken: "",
   });
 
+  const logOut = useCallback(()=>{
+    axios.post(TOKEN_LOGOUT)
+    setTokens({accessToken: "", refreshToken: ""})
+    window.location.href = "http://localhost:3000/logout"
+  }, [setTokens])
+
   const contextValue: IAuthContext = {
     tokens,
     setTokens: (newTokens: ITokens) => setTokens(newTokens),
+    logOut
   };
 
   return (
