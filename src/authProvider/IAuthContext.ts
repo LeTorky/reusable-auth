@@ -3,7 +3,11 @@ export interface ITokens {
   refreshToken: string;
 }
 
+export interface setTokens {
+  (tokens: ITokens): void;
+}
+
 export interface IAuthContext {
   tokens: ITokens;
-  setTokens: (tokens: ITokens) => void;
+  setTokens: setTokens;
 }

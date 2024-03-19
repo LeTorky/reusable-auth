@@ -4,8 +4,11 @@ import useAuthFlow from './utils/useAuthFlow';
 function App() {
   const QuickComp = ()=>{
     const authContext = useAuthContext();
-    useAuthFlow(authContext); 
-    return <div/>
+    useAuthFlow(authContext)
+    return <div>
+      {authContext.tokens.accessToken}
+      {authContext.tokens.refreshToken}
+    </div>
   }
 
   return (
