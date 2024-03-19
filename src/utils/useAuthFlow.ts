@@ -26,6 +26,7 @@ const useAuthFlow = (authContext: IAuthContext) => {
               refreshToken: response.headers["refresh-token"],
             });
             console.log("Fetched Token.");
+            window.history.pushState(null, "", "http://localhost:3000/login");
           })
           .catch((error) => console.log(error));
       } else {
@@ -34,6 +35,7 @@ const useAuthFlow = (authContext: IAuthContext) => {
           authContext.tokens.accessToken;
         axios.defaults.headers.common["Refresh-Token"] =
           authContext.tokens.refreshToken;
+        window.history.pushState(null, "", "http://localhost:3000/");
       }
   }, [authContext]);
 };

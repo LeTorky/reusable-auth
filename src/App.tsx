@@ -1,22 +1,50 @@
 import React from 'react';
 import { AuthContextProvider, useAuthContext } from './authProvider/authProvider';
 import useAuthFlow from './utils/useAuthFlow';
+import useAuthAxios from './utils/useAuthAxios';
+import axios from 'axios';
 function App() {
   const QuickComp = ()=>{
     const authContext = useAuthContext();
-    useAuthFlow(authContext)
+    useAuthFlow(authContext);
+    const axiosAuthReady = useAuthAxios(authContext);
     return <div>
+
       <button onClick={()=>{
         window.location.href = "http://localhost:3000/login"
       }}>Log in</button>
-      <button onClick={()=>{
+
+      {
+        axiosAuthReady && <button onClick={()=>{
         authContext.logOut()
       }}>Log out</button>
-      <button onClick={()=>{
+      }
+
+      {
+        axiosAuthReady && <button onClick={()=>{
         authContext.refresh()
       }}>Refresh</button>
-      {authContext.tokens.accessToken}
-      {authContext.tokens.refreshToken}
+      }
+
+      {
+        axiosAuthReady && <button onClick={()=>{
+        axios.get("replace_with_resource_Url")
+      }}>Make Request</button>
+      }
+
+      <br/>
+      <br/>
+      <br/>
+      <div>
+      AccessToken: {authContext.tokens.accessToken}
+      </div>
+
+      <br/>
+      <br/>
+      <br/>
+      <div>
+      RefreshToken: {authContext.tokens.refreshToken}
+      </div>
     </div>
   }
 
