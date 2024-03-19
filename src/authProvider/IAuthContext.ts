@@ -11,8 +11,13 @@ export interface logOut {
   (): void;
 }
 
+export interface refresh {
+  (): void;
+}
+
 export interface IAuthContext {
   tokens: ITokens;
   setTokens: setTokens;
   logOut: logOut;
+  refresh: refresh;
 }

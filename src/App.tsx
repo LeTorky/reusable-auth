@@ -7,8 +7,14 @@ function App() {
     useAuthFlow(authContext)
     return <div>
       <button onClick={()=>{
+        window.location.href = "http://localhost:3000/login"
+      }}>Log in</button>
+      <button onClick={()=>{
         authContext.logOut()
       }}>Log out</button>
+      <button onClick={()=>{
+        authContext.refresh()
+      }}>Refresh</button>
       {authContext.tokens.accessToken}
       {authContext.tokens.refreshToken}
     </div>

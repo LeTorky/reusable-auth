@@ -3,6 +3,7 @@ import { IAuthContext, ITokens } from "./IAuthContext";
 import axios from "axios";
 
 const TOKEN_LOGOUT = "https://margy-auth.onrender.com/token/logout";
+const TOKEN_REFRESH = "https://margy-auth.onrender.com/token/refresh";
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
@@ -23,15 +24,27 @@ export const AuthContextProvider: React.FC<{children?: ReactElement}> = ({ child
   });
 
   const logOut = useCallback(()=>{
-    axios.post(TOKEN_LOGOUT)
-    setTokens({accessToken: "", refreshToken: ""})
-    window.location.href = "http://localhost:3000/logout"
+    axios.post(TOKEN_LOGOUT).then(
+      response=>{
+        setTokens({accessToken: "", refreshToken: ""})
+        window.location.href = "https://login.microsoftonline.com/f801c87d-d572-4b64-8aa7-5dcd20e0af7b/oauth2/v2.0/logout?post_logout_redirect_uri=http://localhost:3000/logout/"
+      }
+    );
+  }, [setTokens])
+
+  const refresh = useCallback(()=>{
+    axios.post(TOKEN_REFRESH).then(
+      response=>{
+        setTokens(oldToken=>({accessToken: response.headers["authorization"], refreshToken: oldToken.refreshToken}))
+      }
+    )
   }, [setTokens])
 
   const contextValue: IAuthContext = {
     tokens,
     setTokens: (newTokens: ITokens) => setTokens(newTokens),
-    logOut
+    logOut,
+    refresh
   };
 
   return (
