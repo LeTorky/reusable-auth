@@ -33,6 +33,7 @@ export const AuthContextProvider: React.FC<{children?: ReactElement}> = ({ child
   }, [setTokens])
 
   const refresh = useCallback(()=>{
+    console.log("Refreshing Token...")
     axios.post(TOKEN_REFRESH).then(
       response=>{
         setTokens(oldToken=>({accessToken: response.headers["authorization"], refreshToken: oldToken.refreshToken}))
